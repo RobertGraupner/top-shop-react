@@ -1,9 +1,11 @@
+import { Layout } from './components/Layout/Layout';
+
 function App() {
-
-
-  return (
-    <p>Apka działa</p>
-  )
+	return (
+		<>
+			<Layout />
+		</>
+	);
 }
 
-export default App
+export default App;

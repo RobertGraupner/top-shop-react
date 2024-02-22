@@ -1,0 +1,22 @@
+.mainMenu {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+.mainMenu li a {
+	text-transform: uppercase;
+	color: var(--color-text-grey);
+	padding: 1rem 0;
+	/* display block to prevent padding overlapping */
+	display: block;
+	font-weight: 700;
+}
+
+/* :global is used because .active class is not from this file (it is from NavLink, so it's global) */
+.mainMenu a:global(.active) {
+	color: var(--color-text-default);
+	border-bottom: 3px solid var(--color-text-default);
+}
