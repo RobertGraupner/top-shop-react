@@ -3,10 +3,11 @@ import './styles/globals.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-// import { ProductDetails } from './views/ProductDetails/ProductDetails.jsx';
+import { MainPage } from './views/MainPage/MainPage.jsx';
 import { Cart } from './views/Cart/Cart.jsx';
 import { Favourites } from './views/Favourites/Favourites.jsx';
 import { Layout } from './components/Layout/Layout.jsx';
+import { mainPageLoader } from './api/mainPageLoader.js';
 
 const router = createBrowserRouter([
 	{
@@ -20,6 +21,13 @@ const router = createBrowserRouter([
 			{
 				path: '/ulubione',
 				element: <Favourites />,
+			},
+			{
+				// ? oznacza, że parametr jest opcjonalny. Wartość parametru jest przekazywana do komponentu MainPage. Dzięki temu, że jest opcjonalny, to dla pierwszego path:'' też zostanie wyrenderowany komponent MainPage z /kobieta, bo tak mamy ustawiony redirect.
+				path: '/:gender?',
+				element: <MainPage />,
+				// Loader to funkcja, która zwraca dane, które są przekazywane do komponentu MainPage. Funkcja jest w osobnym pliku.
+				loader: mainPageLoader,
 			},
 		],
 	},
