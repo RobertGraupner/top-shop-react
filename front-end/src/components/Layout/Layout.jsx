@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom';
 import { CategoryMenu } from '../CategoryMenu/CategoryMenu';
 import { CurrencySelector } from '../CurrencySelector/CurrencySelector';
 import { Footer } from '../Footer/Footer';
@@ -7,7 +8,8 @@ import { MainContent } from '../MainContent/MainContent';
 import { MainMenu } from '../MainMenu/MainMenu';
 import { TopBar } from '../TopBar/TopBar';
 
-export function Layout({ children }) {
+// Uywamy Outlet zamiast propsa children, ponieważ React Router DOM używa tego komponentu do renderowania komponentów w zależności od ścieżki URL.
+export function Layout() {
 	return (
 		<>
 			<MainContent>
@@ -20,7 +22,7 @@ export function Layout({ children }) {
 					</div>
 				</TopBar>
 				<CategoryMenu />
-				{children}
+				<Outlet />
 			</MainContent>
 			<Footer />
 		</>
