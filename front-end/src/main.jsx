@@ -8,6 +8,8 @@ import { Cart } from './views/Cart/Cart.jsx';
 import { Favourites } from './views/Favourites/Favourites.jsx';
 import { Layout } from './components/Layout/Layout.jsx';
 import { mainPageLoader } from './api/mainPageLoader.js';
+import { productListLoader } from './api/productListLoader.js';
+import { ProductsList } from './views/ProductsList/ProductsList.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -28,6 +30,11 @@ const router = createBrowserRouter([
 				element: <MainPage />,
 				// Loader to funkcja, która zwraca dane, które są przekazywane do komponentu MainPage. Funkcja jest w osobnym pliku.
 				loader: mainPageLoader,
+			},
+			{
+				path: '/:gender/:category/:subcategory?',
+				element: <ProductsList />,
+				loader: productListLoader,
 			},
 		],
 	},
