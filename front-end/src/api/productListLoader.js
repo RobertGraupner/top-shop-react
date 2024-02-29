@@ -14,12 +14,14 @@ export function productListLoader({
 	// sprawdzamy czy wybrane kategorie i płeć są poprawne i znajdują się w naszym obiekcie mapującym
 	const foundCategory = CATEGORIES.find((c) => c.path === category);
 	const foundGender = PATH_TO_ENDPOINT_MAPPING[gender];
-	
+
 	if (foundCategory && foundGender) {
 		let url = `${BACK_END_URL}/products/?gender=${PATH_TO_ENDPOINT_MAPPING[gender]}&category=${category}`;
 
 		if (subcategory) {
-			const foundSubcategory = foundCategory.subcategories.find((sc) => sc.path === subcategory);
+			const foundSubcategory = foundCategory.subcategories.find(
+				(sc) => sc.path === subcategory
+			);
 
 			if (foundSubcategory) {
 				url = `${url}&subcategory=${subcategory}`;
@@ -31,16 +33,17 @@ export function productListLoader({
 		url = `${url}&_limit=8&_page=${page}`;
 		//  odczytujemy nagłówek X-Total-Count z odpowiedzi serwera, w którym znajduje się liczba wszystkich produktów
 		return fetch(url).then((response) => {
-			const numberOfPages = Math.ceil(Number(response.headers.get('X-Total-Count')) / 8
+			const numberOfPages = Math.ceil(
+				Number(response.headers.get('X-Total-Count')) / 8
 			);
 			console.log(numberOfPages);
 			// nadrzędny .then zwraca obiekt z tablicą produktów i liczbą stron i czeka aż zwróci się response.json() i drugi .then
 			return response.json().then((products) => {
 				return {
 					products,
-					numberOfPages
+					numberOfPages,
 				};
-			})
+			});
 		});
 	} else {
 		redirect(`/kobieta`);
