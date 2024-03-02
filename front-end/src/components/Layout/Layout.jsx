@@ -9,28 +9,23 @@ import { MainMenu } from '../MainMenu/MainMenu';
 import { TopBar } from '../TopBar/TopBar';
 import { CurrencyContext } from '../../contexts/CurrencyContext';
 import { CURRENCIES } from '../../constants/currencies';
-import { useState } from 'react';
 import { CartContext } from '../../contexts/CartContext';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 // Uywamy Outlet zamiast propsa children, ponieważ React Router DOM używa tego komponentu do renderowania komponentów w zależności od ścieżki URL.
 export function Layout() {
-	const [currency, setCurrency] = useState(
-		localStorage['selected_currency'] || CURRENCIES.PLN
+	const [currency, setCurrency] = useLocalStorage(
+		'selected_currency',
+		CURRENCIES.PLN
 	);
+
 	// uzyway localStorage, aby przechowywac wybrane produkty w koszyku. Mozna było zapisać na serwerze
-	// jesli do useState przekazujemy funkcje, to zostanie ona wywołana tylko raz, podczas pierwszego renderowania komponentu. Jest to przydatne, gdy chcemy uniknąć wywoływania funkcji za każdym razem, gdy komponent jest renderowany. Nazywa sie to funkcja inicjalizująca
-	const [cartItems, setCartItems] = useState(() => {
-		return localStorage['cart_products']
-			? JSON.parse(localStorage['cart_products'])
-			: [];
-	});
+	// jesli do useState przekazujemy funkcje, to zostanie ona wywołana tylko raz
+	const [cartItems, setCartItems] = useLocalStorage('cart_products', []);
 
 	function addProductToCart(product) {
-		setCartItems((previousCartItems) => {
-			const newState = [...previousCartItems, product];
-			localStorage['cart_products'] = JSON.stringify(newState);
-			return newState;
-		});
+		const newState = [...cartItems, product];
+		setCartItems(newState);
 	}
 
 	return (
