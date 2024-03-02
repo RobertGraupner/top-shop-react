@@ -10,30 +10,48 @@ import { TopBar } from '../TopBar/TopBar';
 import { CurrencyContext } from '../../contexts/CurrencyContext';
 import { CURRENCIES } from '../../constants/currencies';
 import { useState } from 'react';
+import { CartContext } from '../../contexts/CartContext';
 
 // Uywamy Outlet zamiast propsa children, ponieważ React Router DOM używa tego komponentu do renderowania komponentów w zależności od ścieżki URL.
 export function Layout() {
 	const [currency, setCurrency] = useState(
 		localStorage['selected_currency'] || CURRENCIES.PLN
 	);
+	// uzyway localStorage, aby przechowywac wybrane produkty w koszyku. Mozna było zapisać na serwerze
+	// jesli do useState przekazujemy funkcje, to zostanie ona wywołana tylko raz, podczas pierwszego renderowania komponentu. Jest to przydatne, gdy chcemy uniknąć wywoływania funkcji za każdym razem, gdy komponent jest renderowany. Nazywa sie to funkcja inicjalizująca
+	const [cartItems, setCartItems] = useState(() => {
+		return localStorage['cart_products']
+			? JSON.parse(localStorage['cart_products'])
+			: [];
+	});
+
+	function addProductToCart(product) {
+		setCartItems((previousCartItems) => {
+			const newState = [...previousCartItems, product];
+			localStorage['cart_products'] = JSON.stringify(newState);
+			return newState;
+		});
+	}
 
 	return (
 		<>
-			<CurrencyContext.Provider value={[currency, setCurrency]}>
-				<MainContent>
-					<TopBar>
-						<MainMenu />
-						<Logo />
-						<div>
-							<CurrencySelector />
-							<IconMenu />
-						</div>
-					</TopBar>
-					<CategoryMenu />
-					<Outlet />
-				</MainContent>
-				<Footer />
-			</CurrencyContext.Provider>
+			<CartContext.Provider value={[cartItems, addProductToCart]}>
+				<CurrencyContext.Provider value={[currency, setCurrency]}>
+					<MainContent>
+						<TopBar>
+							<MainMenu />
+							<Logo />
+							<div>
+								<CurrencySelector />
+								<IconMenu />
+							</div>
+						</TopBar>
+						<CategoryMenu />
+						<Outlet />
+					</MainContent>
+					<Footer />
+				</CurrencyContext.Provider>
+			</CartContext.Provider>
 		</>
 	);
 }
