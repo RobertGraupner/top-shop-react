@@ -1,5 +1,5 @@
 import styles from './Product.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useFetcher } from 'react-router-dom';
 
 const ENDPOINT_TO_PATH_MAPPING = {
 	men: 'mezczyzna',
@@ -8,6 +8,10 @@ const ENDPOINT_TO_PATH_MAPPING = {
 };
 
 export function Product({ product }) {
+	// useFetcher to hook, który zwraca obiekt z dwoma funkcjami: Form i fetch. Działa jak zwykły Form
+	// z tym, że po submicie nie przekierowuje na stronę, która jest zdefiniowana w action
+	const { Form } = useFetcher();
+
 	return (
 		<Link
 			to={`/${ENDPOINT_TO_PATH_MAPPING[product.gender]}/${product.category}/${
@@ -18,6 +22,14 @@ export function Product({ product }) {
 			<h3>{product.productName}</h3>
 			<p>{product.pricePLN} zł</p>
 			<div className={styles.hearth}></div>
+			<Form
+				onClick={(e) => e.stopPropagation()}
+				action={`/add-to-favourites/${product.id}`}
+				method='POST'>
+				<button>
+					<div className={styles.hearth}></div>
+				</button>
+			</Form>
 		</Link>
 	);
 }

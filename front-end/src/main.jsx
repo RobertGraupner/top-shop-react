@@ -12,8 +12,21 @@ import { ProductDetails } from './views/ProductDetails/ProductDetails.jsx';
 import { productListLoader } from './api/productListLoader.js';
 import { ProductsList } from './views/ProductsList/ProductsList.jsx';
 import { productLoader } from './api/productLoader.js';
+import { addProductToFavouritesAction } from './api/addProductToFavouritesAction.js';
+import { favouritesLoader } from './api/favouritesLoader.js';
+import { deleteFavouriteAction } from './api/deleteFavouriteAction.js';
 
 const router = createBrowserRouter([
+	{
+		path: '/add-to-favourites/:productId',
+		action: addProductToFavouritesAction,
+	},
+	// usuwamy z ulubionych. następnie widok się odświezy bo react wykona loader z Favourites.
+	// Dzieje się tak, bo react widzi,ze zmieniły się dane, na sciezce /ulubione
+	{
+		path: `/delete-from-favourites/:favouriteId`,
+		action: deleteFavouriteAction,
+	},
 	{
 		path: '',
 		element: <Layout />,
@@ -25,6 +38,7 @@ const router = createBrowserRouter([
 			{
 				path: '/ulubione',
 				element: <Favourites />,
+				loader: favouritesLoader,
 			},
 			{
 				// ? oznacza, że parametr jest opcjonalny. Wartość parametru jest przekazywana do komponentu MainPage. Dzięki temu, że jest opcjonalny, to dla pierwszego path:'' też zostanie wyrenderowany komponent MainPage z /kobieta, bo tak mamy ustawiony redirect.
