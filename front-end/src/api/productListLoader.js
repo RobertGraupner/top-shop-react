@@ -3,6 +3,7 @@ import { BACK_END_URL, PATH_TO_ENDPOINT_MAPPING } from '../constants/api';
 import { CATEGORIES } from '../constants/categories';
 
 // gender i category to parametry z URL
+// pole request to obiekt z danymi o zapytaniu, które jest wykonywane przez przeglądarkę. W tym obiekcie znajduje się m.in. URL zapytania
 export function productListLoader({
 	params: { gender, category, subcategory },
 	request,
@@ -10,6 +11,7 @@ export function productListLoader({
 	// page to parametr z URL, który określa numer strony z produktami
 	const pageUrl = new URL(request.url);
 	// odczytujemy wartość parametru page z URL, jeśli nie ma takiego parametru, to domyślnie jest to strona 1
+	// searchParams to obiekt, który zawiera wszystkie parametry zapytania z URL
 	const page = pageUrl.searchParams.get('page') || 1;
 	// sprawdzamy czy wybrane kategorie i płeć są poprawne i znajdują się w naszym obiekcie mapującym
 	const foundCategory = CATEGORIES.find((c) => c.path === category);
@@ -36,7 +38,6 @@ export function productListLoader({
 			const numberOfPages = Math.ceil(
 				Number(response.headers.get('X-Total-Count')) / 8
 			);
-			console.log(numberOfPages);
 			// nadrzędny .then zwraca obiekt z tablicą produktów i liczbą stron i czeka aż zwróci się response.json() i drugi .then
 			return response.json().then((products) => {
 				return {

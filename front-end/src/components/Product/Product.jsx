@@ -1,7 +1,5 @@
 import styles from './Product.module.css';
 import { Link, useFetcher } from 'react-router-dom';
-import { useContext } from 'react';
-import { CurrencyContext } from '../../contexts/CurrencyContext';
 import { Price } from '../Price/Price';
 
 const ENDPOINT_TO_PATH_MAPPING = {
@@ -14,7 +12,6 @@ export function Product({ product }) {
 	// useFetcher to hook, który zwraca obiekt z dwoma funkcjami: Form i fetch. Działa jak zwykły Form
 	// z tym, że po submicie nie przekierowuje na stronę, która jest zdefiniowana w action
 	const { Form } = useFetcher();
-	const [currency] = useContext(CurrencyContext);
 
 	return (
 		<Link

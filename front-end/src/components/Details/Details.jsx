@@ -5,6 +5,7 @@ import { FullWidthButton } from '../FullWidthButton/FullWidthButton';
 import { Accordion } from '../Accordion/Accordion';
 import { useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext';
+import { Price } from '../Price/Price';
 
 export function Details({ product }) {
 	const [, addProductToCart] = useContext(CartContext);
@@ -24,7 +25,9 @@ export function Details({ product }) {
 		<div className={styles.details}>
 			<h2>{product.brand}</h2>
 			<p className={styles.productName}>{product.productName}</p>
-			<p className={styles.price}>{product.pricePLN} zł</p>
+			<p className={styles.price}>
+				<Price product={product} />
+			</p>
 
 			<FullWidthButton
 				// Dodajemy produkt do koszyka, prevCartItems to poprzednia wartość koszyka, a product to nowy produkt
